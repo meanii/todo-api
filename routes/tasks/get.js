@@ -18,7 +18,17 @@ module.exports = {
 
     getAll: (req, res)=>{
 
-        Task.find()
+        const pageSize = +req.query.pagesize;
+        const currentPage = +req.query.currentpage;
+        const taskQuery = Task.find();
+
+        if (pageSize && currentPage) {
+            taskQuery
+            .skip( pageSize * (currentPage -1) )
+            .limit( pageSize )
+        }
+
+        taskQuery
             .then(tasks=>{
                 res.json({
                     status: {
