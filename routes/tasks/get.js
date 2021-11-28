@@ -22,20 +22,21 @@ module.exports = {
         const currentPage = +req.query.currentpage;
         const taskQuery = Task.find();
 
-        if (pageSize && currentPage) {
+        if (pageSize && (currentPage > -1)) {
             taskQuery
-            .skip( pageSize * (currentPage -1) )
+            .skip( pageSize * (currentPage) )
             .limit( pageSize )
         }
 
         taskQuery
-            .then(tasks=>{
+            .then(async tasks=>{
                 res.json({
                     status: {
                         message: "Successfully got all documents.",
                         code: 200
                     },
-                    data: tasks
+                    data: tasks,
+                    totalCount: await Task.count()
                 });
             })
     
