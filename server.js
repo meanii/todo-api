@@ -24,7 +24,8 @@ if (process.env.MONGODB_URL !== null) {
 const app = express();
 const port = process.env.PORT || 3000;
 
-let tasks = require('./routes/tasks')
+let tasks = require('./routes/tasks');
+let users = require('./routes/users');
 
 
 // init body parser, If there is json inside it it will parse it
@@ -37,7 +38,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 // Middlewares set
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'content-type, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, content-type, Content-Type, Accept, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
         
     next();
@@ -45,7 +46,10 @@ app.use((req, res, next) => {
 
 
 app.set('port', port);
+
+// setting up endpoints 
 app.use('/api/tasks/', tasks)
+app.use('/api/users/', users)
 
 // static files middlewares 
 app.use("/images", express.static(path.join('images')))

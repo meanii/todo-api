@@ -1,5 +1,7 @@
 const express = require('express');
 const multer = require('multer')
+const checkAuth = require("../../middlewares/check-auth");
+
 
 const  MINE_TYPE_MAP = {
     'image/png': 'png',
@@ -10,7 +12,6 @@ const  MINE_TYPE_MAP = {
 const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const name = file.originalname.toLowerCase().split(' ').join('-');
-        console.log(name)
         const ext = MINE_TYPE_MAP[file.mimetype];
         cb(null,`${name}-${Date.now()}.${ext}`);
     },
@@ -34,8 +35,9 @@ let del = require('./delete');
 // routers initation 
 router.get('/', get.getAll);
 router.get('/:id', get.getById);
-router.post('/', multer({storage: storage}).single('image'), post.createTask);
-router.put('/:id', multer({storage: storage}).single('image'), put.updateTask);
-router.delete('/:id', del.deleteTask);
+
+router.post('/', checkAuth, multer({storage: storage}).single('image'), post.createTask);
+router.put('/:id', checkAuth, multer({storage: storage}).single('image'), put.updateTask);
+router.delete('/:id', checkAuth, del.deleteTask);
 
 module.exports =  router;
