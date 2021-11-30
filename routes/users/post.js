@@ -7,10 +7,10 @@ require('dotenv').config();
 
 module.exports = {
     login: async (req, res) => {
-        const user = Users.findOne({email: req.body.email})
+        const user = await Users.findOne({email: req.body.email})
         try {
             if(user){
-                const compareStatus = bcrypt.compare(req.body.password, user.password)
+                const compareStatus = await bcrypt.compare(req.body.password, user.password)
                 console.log(compareStatus)
                 if(compareStatus) {
                     const token = jwt.sign(
@@ -25,7 +25,8 @@ module.exports = {
                         },
                         data: {
                             token: token,
-                            expiresIn: 3600 
+                            expiresIn: 3600 ,
+                            userId: user._id
                         }
                     })
                     

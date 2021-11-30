@@ -16,15 +16,34 @@ module.exports = {
             imagePath: imagePath
         });
     
-        Task.updateOne({_id: req.body._id}, task)
-        .then(()=> {
-            res.json({
+        Task.updateOne({_id: req.body._id, creator: req.userData.userId}, task)
+        .then((result)=> {
+            console.log(result)
+            if(result.n > 0) {
+                res.json({
+                    status: {
+                        message: "Successfully updated the document.",
+                        code: 201
+                    },
+                    data: task
+                })
+            } else {
+                res.status(401).json({
+                    status: {
+                        message: "Failed updated the document.",
+                        code: 401
+                    },
+                    data: task
+                })
+            }
+            
+        }).catch(e=>{
+            res.status(500).json({
                 status: {
-                    message: "Successfully updated the document.",
-                    code: 201
-                },
-                data: task
-            })
-        })
+                    message: e.message,
+                    code: 500,
+                }
+            });
+        });
     }
 }

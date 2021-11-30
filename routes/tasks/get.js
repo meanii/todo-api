@@ -38,7 +38,14 @@ module.exports = {
                     data: tasks,
                     totalCount: await Task.count()
                 });
-            })
+            }).catch(e=>{
+                res.status(500).json({
+                    status: {
+                        message: e.message,
+                        code: 500,
+                    }
+                });
+            });
     
     }
 }

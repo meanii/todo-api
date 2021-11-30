@@ -10,9 +10,17 @@ module.exports = {
         const task = new Task({
             title: req.body.title,
             description: req.body.description,
-            imagePath: url + '/images/' + req.file.filename
+            imagePath: url + '/images/' + req.file.filename,
+            creator: req.userData.userId
         });
-        task.save();
+        task.save().catch(e=>{
+            res.status(500).json({
+                status: {
+                    message: e.message,
+                    code: 500,
+                }
+            });
+        });
     
         res.json({
             status: {
