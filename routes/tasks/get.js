@@ -18,9 +18,14 @@ module.exports = {
 
     getAll: (req, res)=>{
 
+        const userid = req.headers.userid
+        var dbQuery = {}
+        if(userid != undefined){
+            dbQuery = {"creator": userid}
+        }
         const pageSize = +req.query.pagesize;
         const currentPage = +req.query.currentpage;
-        const taskQuery = Task.find();
+        const taskQuery = Task.find(dbQuery);
         if (pageSize && (currentPage > -1)) {
             taskQuery
             .skip( pageSize * (currentPage) )

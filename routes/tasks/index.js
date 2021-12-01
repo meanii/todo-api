@@ -13,7 +13,7 @@ let del = require('./delete');
 
 // routers initation 
 router.get('/', get.getAll);
-// router.post('/', post.getUserTask)
+// router.get('/', get.getUserTask);
 router.get('/:id', get.getById);
 
 router.post('/', checkAuth, fileUploadHandler, post.createTask);
