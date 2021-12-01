@@ -19,7 +19,7 @@ module.exports = {
         Task.updateOne({_id: req.body._id, creator: req.userData.userId}, task)
         .then((result)=> {
             console.log(result)
-            if(result.n > 0) {
+            if(result) {
                 res.json({
                     status: {
                         message: "Successfully updated the document.",

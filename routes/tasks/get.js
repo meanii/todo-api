@@ -21,7 +21,6 @@ module.exports = {
         const pageSize = +req.query.pagesize;
         const currentPage = +req.query.currentpage;
         const taskQuery = Task.find();
-
         if (pageSize && (currentPage > -1)) {
             taskQuery
             .skip( pageSize * (currentPage) )

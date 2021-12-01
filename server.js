@@ -2,7 +2,8 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const path = require('path')
+const path = require('path');
+const cors = require("cors");
 
 // load env Varibales
 require('dotenv').config();
@@ -36,14 +37,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 
 // Middlewares set
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, content-type, Content-Type, Accept, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-        
-    next();
-})
-
+app.use(cors());
 
 app.set('port', port);
 
